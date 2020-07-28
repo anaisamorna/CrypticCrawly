@@ -1,0 +1,11 @@
+r150$treat <- factor(r150$treat,
+                           levels=c("H2O", "AD", "GL", "OS", "OSGL"))
+#
+j150pre <- c(r150$juv.start , r150$treat)
+j150pre
+#
+j150post <- c(r150$juv.end , r150$treat) 
+j150post
+#
+juv150 <- glm(j150post ~ j150pre)
+summary(juv150)
