@@ -1,0 +1,8 @@
+start.mass <- c(data$start.mass , data$treatment)
+start.mass
+#
+end.mass <- c(data$end.mass , data$treatment)
+end.mass
+#
+mass.lm <- lm(start.mass ~ end.mass)
+summary(mass.lm)
