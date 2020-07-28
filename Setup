@@ -1,0 +1,17 @@
+setwd("add_folder_path") # set working directory
+#
+data <- read.delim(file = "data_file_path"
+                     header = T,
+                     sep="\t") # select file
+#         
+attach(data) # some comands might require attaching file
+#
+names(dataframe)
+#
+AJ300 <- paste(data$column.name + data$column.name) 
+# Combine two or more columns in a dataframe into a new column with a new name
+head(AJ300)
+#
+data$column.name <- factor(data$column.name,
+                        levels=c("treat1", "treat2", "treat3", "treat4", "treat5"))
+# Make a variable explicitly a factor, with treat1 as baseline                      
