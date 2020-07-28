@@ -1,0 +1,7 @@
+name <- ddply(data, c("column.name1", "column.name2"), summarise,
+                     N = length(column.name3),
+                     mean = mean(column.name3),
+                     sd = sd(column.name3),
+                     se = sd / sqrt (N))
+name 
+# column.name1 = i.e. treat ; column.name2 = i.e. rate ; column.name3 = i.e. mass
