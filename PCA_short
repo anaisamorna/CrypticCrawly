@@ -1,5 +1,17 @@
 ## PCA - short script ####
 #
+#
+# Useful packages
+#
+library(phia)
+library(dplyr)
+library(vegan)
+library(ggplot2)
+library(tidyverse)
+library(ggfortify)
+library(gridExtra)
+#
+#
 data <-read.table(file.choose(),header=TRUE,  fill =  FALSE)
 attach(data)
 names(data)
