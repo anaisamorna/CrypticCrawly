@@ -63,3 +63,11 @@ round(PVE, 2)
 #
 #
 screeplot(pca)
+#
+#
+pca
+screeplot(pca)  
+biplot(pca)
+#
+#
+#
