@@ -1,0 +1,53 @@
+## PCA - short script ####
+#
+data <-read.table(file.choose(),header=TRUE,  fill =  FALSE)
+attach(data)
+names(data)
+#
+select.data <- data[2:16] # only use columns 2-16 from data 
+#
+#
+# By default, the prcomp function centers the variables to have mean zero. 
+# By using the option scale = TRUE, we scale the variables to have standard deviation one. 
+# The output from prcomp contains a number of useful quantities.
+#
+pca <- prcomp(select.data, scale = TRUE)
+names(pca)
+#
+#
+# The "center" and "scale" components correspond to the means and SD of the variables
+# that were used for scaling prior to implementing PCA
+#
+# means
+pca$center
+#
+# SD
+pca$scale
+#
+#
+# The "rotation" matrix provides the PC loadings;
+# each column of pca1$rotation contains the corresponding PC loading vector
+#
+pca$rotation
+#
+#
+# Obtain the PC scores from the results
+# If we project the n data points x1,...,xn onto the first eigenvector,
+# the projected values are called the principal component scores for each observation.
+#
+pca$x 
+#
+#
+# Variance Explained by each PC 
+#
+pca$sdev
+#
+(VE <- pca$sdev^2)
+#
+# The Proportion of Variance explained by each PC
+#
+PVE <- VE / sum(VE)
+round(PVE, 2)
+#
+#
+screeplot(pca)
