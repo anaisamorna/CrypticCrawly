@@ -1,0 +1,108 @@
+## PCA - long script ####
+#
+#
+# Useful packages
+#
+library(phia)
+library(dplyr)
+library(vegan)
+library(ggplot2)
+library(tidyverse)
+library(ggfortify)
+library(gridExtra)
+#
+#
+setwd("C:/Folder/Data/Path")
+#
+data <-read.table(file.choose(),header=TRUE,  fill =  FALSE)
+attach(data)
+names(data)
+#
+select.data <- data[2:18] # e.g. only use columns 2-18 from data 
+#
+#
+# The "center" and "scale" components correspond to the means and SD of the variables
+# that were used for scaling prior to implementing PCA
+#
+# means
+pca$center
+#
+# SD
+pca$scale
+#
+#
+# The "rotation" matrix provides the PC loadings;
+# each column of pca1$rotation contains the corresponding PC loading vector
+#
+pca$rotation
+#
+#
+# Obtain the PC scores from the results
+# If we project the n data points x1,...,xn onto the first eigenvector,
+# the projected values are called the principal component scores for each observation.
+#
+pca$x 
+#
+#
+# Plot pca - function "biplot" plots first two PCs by default,
+# add e.g. "choices = 3:4" if PC3 and PC4 are the desired ones
+# Argument "scale = 0"  ensures that the arrow are scaled to represent the loadings
+# The arrows are labeled errors indicating the directional influence each variable has on the PC
+#
+biplot(pca, scale = 0)
+#
+#
+# SD for each PC
+#
+pca$sdev
+#
+#
+# Variance Explained by each PC 
+#
+(VE <- pca1$sdev^2)
+#
+#
+# The Proportion of Variance explained by each PC
+#
+PVE <- VE / sum(VE)
+round(PVE, 2)
+#
+#
+# PVE plot aka scree plot
+#
+PVEplot <- qplot(c(1:18), PVE) +
+  geom_line() +
+  xlab("Principal Component") +
+  ylab("PVE") + 
+  ggtitle("Scree Plot") +
+  ylim(0,1)
+#
+# Cummulative PVE plot
+cumPVE <- qplot(c(1:18), cumsum(PVE)) +
+  geom_line() +
+  xlab("Principal Component") +
+  ylab(NULL) +
+  ggtitle("Cumulative Scree Plot") +
+  ylim(0,1)
+#
+grid.arrange(PVEplot, cumPVE, ncol = 2)
+#
+#
+pca
+screeplot(pca)  
+biplot(pca)
+#
+#
+autoplot(pca, data = data, 
+         colour = 'Treatment',
+         label = TRUE,
+         label.size = 3)
+#
+autoplot(pca, data = data, 
+         colour = 'Treatment',
+         shape = FALSE,
+         label.size = 3,
+         loadings = TRUE, loadings.label = TRUE, loadings.label.size = 3)
+#
+#
+#
