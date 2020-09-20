@@ -1,0 +1,17 @@
+data <- na.omit(data)
+# Omits (removes) all rows in data frame that contain NA(s)
+#
+data[complete.cases(data[ , 2:4]),]
+# Selection of certain columns for the removal of NA(s) in the dataframe 
+#
+data[rowSums(is.na(dat[ , 2:4])) == 0, ]
+# If NA(s) are to be kept, then they can be changed to zeros 
+#
+#
+# e.g.
+data1 <-read.table(file.choose(),header=TRUE,  fill =  TRUE)
+# missing values will be filled with NA(s)
+#
+data2 <- na.omit(data)
+# Has removed all rows with NA(s) or pick other function to partially remove
+# columns or replace NA(s) with other values
