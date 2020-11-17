@@ -1,0 +1,9 @@
+## Identify which packages/functions are being used by the R file ####
+#
+install.packages("NCmisc")
+library(NCmisc)
+#
+q <- NCmisc::list.functions.in.file("Script_Name.R")
+summary(q)
+#
+# Fromm https://towardsdatascience.com/r-you-sure-youre-using-this-package-8ce265a990b0
