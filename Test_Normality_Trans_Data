@@ -21,6 +21,11 @@ shapiro.test(myVar$residuals)
 #
 # 1.3 Var transformation needed if normal distribution is rejected ####
 #
+# "The Tukey ladder of powers (sometimes called the Bulging Rule) is a way to change the shape of a skewed distribution so that it becomes normal or nearly-normal. 
+# It can also help to reduce error variability (heteroscedasticity). 
+# Tukey (1977) created a table of powers (numbers to which data can be raised)."
+# https://www.statisticshowto.com/tukey-ladder-of-powers/#:~:text=The%20Tukey%20ladder%20of%20powers%20(sometimes%20called%20the%20Bulging%20Rule,which%20data%20can%20be%20raised).
+#
 par(mfrow = c(1,3))
 #
 transVar <- transformTukey(Var)
