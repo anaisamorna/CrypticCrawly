@@ -1,0 +1,18 @@
+# Shannon-Wiener Diversity Index
+#
+install.packages("vegan")
+#
+library(vegan)
+#
+# can be applied to Simpson and Fisher diversity indices and species richness as well
+#
+taxa.div <- diversity(counts, 
+                      index = "shannon", 
+                      MARGIN = 1, 
+                      base = exp(1))
+fisher.alpha(counts, 
+             MARGIN = 1)
+specnumber(counts, 
+           taxa, 
+           MARGIN = 1)
+taxa.div
