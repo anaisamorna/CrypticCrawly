@@ -1,3 +1,47 @@
 lme1 <- lme (y ~ x1 * x2, 
                         data = data,
                         random = ~ 1|Block)
+#
+# e.g. from Ed Harris https://harper-adams-rug.slack.com/team/UP9M0MU67 
+# taken from https://harper-adams-rug.slack.com/archives/CQQ7X4JD8/p1608278046000100?thread_ts=1607949864.001600&cid=CQQ7X4JD8
+# 
+# antimaize.csv == Maize experiment data with... 
+# harvwt == amount of coooorn!
+# trt == several treatments
+# block == 4 different blocks
+# for this example we will ignore the rest of the data
+#
+maize <- read.csv("antimaize.csv")
+maize$trt <- as.factor(maize$trt)
+library(lme4)
+#
+lme0 <- lmer(harvwt ~ trt + 
+                          (1|block), 
+                          data = maize)
+#
+# try graphing the different blocks...
+library(visreg)
+visreg(lme0, 
+          xvar = "trt", 
+          by = "block",
+          scales = list(rot = 90))
+# Notice the 4 block panels are very similar
+# There is a lot of difference between treatments
+#
+summary(lme0)
+#
+# The random effects part is here:
+# Random effects:
+#   Groups   Name        Variance Std.Dev.
+# block    (Intercept) 0.000    0.000   
+# Residual             2.883    1.698   
+# Number of obs: 287, groups:  block, 4
+# The part of interest is the VARIANCE term of the BLOCK INTERCEPT
+# This represents the variance in model estimate BETWEEN blocks
+# Here it is ZERO - the random effect adds nothing
+#
+lm0 <- lm(harvwt ~ trt, 
+                      data = maize)
+#                      
+# The lme is not better than simple model without random effect
+anova(lme0, lm0) 
