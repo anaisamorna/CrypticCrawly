@@ -1,0 +1,48 @@
+## 01.1 Summary Statistics ####
+#
+socm.E1 %>%
+  group_by(season,treat) %>%
+  get_summary_stats(SOM, type = "mean_se")
+#
+## 01.2 Visualization ####
+#
+newdf <- unite(socm.E1, 
+             newcol, 
+             c(treat, season), 
+             remove = FALSE)
+
+newdf %>%
+  mutate(observation = 1:n()) %>%
+  select(observation, everything())
+#
+
+bxp <- ggboxplot(newcol, 
+                 x = "newcol", 
+                 y = "SOC", 
+                 add = "point")
+bxp
+#
+## 01.3 Chek assumptions ####
+#
+socm.E1 %>% 
+  group_by(season, treat) %>%
+  identify_outliers(SOM)
+#
+## 01.4 Normality assumption ####
+# 
+socm.E1 %>%
+  group_by(treat, season) %>%
+  shapiro_test(SOM)
+#
+ggqqplot(newcol,
+         "SOM",
+         facet.by = "newcol")
+#
+## 01.5 Computation ####
+#
+names(newdf)
+res.aov <- anova_test(data = newdf, 
+                      dv = SOC, 
+                      wid = observation,
+                      within = treat)
+
