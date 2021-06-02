@@ -1,3 +1,60 @@
+## HEADER ####
+## Project: NORBURY'S SOC SOM Microbial Biomass Chapter 
+#
+## Data file(s):
+#
+# M:/Norbury/Results/Stats_Thesis/SOC_SOM_E1.xlsx
+# 
+# The whole processed data with graphs is in: 
+#
+# M:/Norbury/Results/Stats_Thesis/Raw_Regression_All_Raw_Data_Output.xlsx
+#
+## CONTENTS ####
+## 00 Setup
+## 01 Repeated Measures
+## 01.0 Data Preparation 
+## 01.1 Summary statistics
+## 01.2 Visualization
+## 01.3 Chek assumptions
+## 01.4 Normality Assumptions
+## 01.5 Computation
+## 01.6 Post-hoc tests
+## 01.7 Report
+# Tutorial used in part: https://www.datanovia.com/en/lessons/repeated-measures-anova-in-r/
+#
+## 00 Setup ####
+# Install or upload required packages
+#
+library(tidyverse)
+library(ggpubr)
+library(rstatix)
+#
+#
+setwd("M:/Norbury/Results/Stats_Thesis")
+#
+#
+socm.E1 <-read.table(file.choose(),header=TRUE,  fill =  TRUE)
+attach(socm.E1)
+names(socm.E1)
+#
+#
+SOM_E1 <-read.table(file.choose(),header=TRUE,  fill =  TRUE)
+attach(SOM_E1)
+names(SOM_E1)
+#
+## 01.0 Data Preparation ####
+#
+head(SOM_E1, 3)
+# a tibble: 3 x 4
+#
+# gather columns of temporal data on som into long format 
+# convert id and som the new column of sampling period into factor variables
+SOM_E1 <- SOM_E1 %>%
+  gather(key = "season",
+         value = "som", som_m17, som_o17, som_m18, som_o18) %>%
+  convert_as_factor(id_m, season)
+head(SOM_E1, 3)
+#
 ## 01.1 Summary Statistics ####
 #
 socm.E1 %>%
@@ -45,4 +102,70 @@ res.aov <- anova_test(data = newdf,
                       dv = SOC, 
                       wid = observation,
                       within = treat)
-
+#
+#
+#
+SOM_E1 <-read.table(file.choose(),header=TRUE,  fill =  TRUE)
+names(SOM_E1)
+#
+## 01.0 Data Preparation ####
+#
+head(SOM_E1, 3)
+# a tibble: 3 x 4
+#
+# gather columns of temporal data on som into long format 
+# convert id and som the new column of sampling period into factor variables
+SOM_E1 <- SOM_E1 %>%
+  gather(key = "season",
+         value = "som", som_m17, som_o17, som_m18, som_o18) %>%
+  convert_as_factor(id_m, season, treat_m)
+#
+head(SOM_E1, 3)
+#
+# Inspect some random rows of the data by groups
+set.seed(123)
+SOM_E1 %>% sample_n_by(treat_m, season, size = 1)
+#
+## 01.1 Summary Statistics ####
+#
+SOM_E1 %>% 
+  group_by(treat_m, season) %>%
+  get_summary_stats(som, type = "mean_se")
+#
+## 01.2 Visualisation ####
+#
+bxp <- ggboxplot(
+  socm.E1, x = "season", y = "SOC",
+  color = "treat", palette = "jco"
+  )
+bxp
+#
+## 01.3 Check Assumptions ####
+#
+socm.E1 %>%
+  group_by(treat, season) %>%
+  identify_outliers(SOC)
+#
+## 01.4 Normality Assumption ####
+#
+socm.E1 %>%
+  group_by(treat, season) %>%
+  shapiro_test(SOC)
+#
+ggqqplot(socm.E1, "SOC",
+         ggtheme = theme_bw()) +
+  facet_grid(season ~ treat,
+             labeller = "label_both")
+#
+## 01.5 2-Way ANOVA Computation ####
+#
+aov1 <- aov(SOC ~ treat * season, 
+            data = socm.E1)
+summary(aov1)
+TukeyHSD(aov1)
+#
+# Check whether any of the variables has NAs
+all(is.na(som))
+all(is.na(id_m))
+all(is.na(treat_m))
+all(is.na(season))
