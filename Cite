@@ -7,3 +7,9 @@ q <- NCmisc::list.functions.in.file("Script_Name.R")
 summary(q)
 #
 # Fromm https://towardsdatascience.com/r-you-sure-youre-using-this-package-8ce265a990b0
+#
+# Cite R version
+citation()
+#
+# Cite packages
+citation("pkg.name")
