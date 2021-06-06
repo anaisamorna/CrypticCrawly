@@ -5,3 +5,34 @@ name <- ddply(data, c("column.name1", "column.name2"), summarise,
                      se = sd / sqrt (N))
 name 
 # column.name1 = i.e. treat ; column.name2 = i.e. rate ; column.name3 = i.e. mass
+#
+#
+#
+library(rstatix)
+# https://rdrr.io/cran/rstatix/man/get_summary_stats.html
+#
+# type of summary statistics. Possible values include: "full", "common", "robust", "five_number", 
+# "mean_sd", "mean_se", "mean_ci", "median_iqr", "median_mad", "quantile", "mean", "median", "min", "max"
+#
+# Full summary statistics
+data("data.frame")
+data.frame %>% get_summary_stats(var)
+#
+# Summary statistics of grouped data
+# Show only common summary
+data.frame %>%
+  group_by(treat, season) %>%
+  get_summary_stats(var, type = "common")
+#
+# Robust summary statistics
+data.frame %>% get_summary_stats(var, type = "robust")
+#
+# Five number summary statistics
+data.frame %>% get_summary_stats(var, type = "five_number")
+#
+# Compute only mean and sd
+data.frame %>% get_summary_stats(var, type = "mean_sd")
+#
+# Compute full summary statistics but show only mean, sd, median, iqr
+data.frame %>%
+    get_summary_stats(var, show = c("mean", "sd", "median", "iqr"))
