@@ -1,0 +1,175 @@
+## HEADER ####
+## Project:
+#
+## Data file(s):
+#
+# 
+#
+## Last editor: 
+#
+## Last edited: 
+#
+## Tutorial: https://www.r-bloggers.com/2020/05/correlation-coefficient-and-correlation-test-in-r/ 
+#
+## CONTENTS ####
+## 00 Setup
+## 01 Correlation coefficient - Between two variables
+## 02 Correlation matrix - Correlations for all variables
+## 03 Visualise Correlations - Scatterplots for several pairs of variables
+## 04 Another simple correlation matrix
+## 05 Correlation test - For several pairs of variables
+## 06 Combination of correlation coefficients and correlation tests
+## 07 Correlograms
+#
+#
+## 00 Setup ####
+getwd()
+setwd("WD")
+#
+# Packages
+# install.packages(c("pkname", "pkname", "pkname"))
+#
+# or install individual packages
+install.packages("tidyverse")
+library(tidyverse)
+#
+install.packages("corrplot")
+library(corrplot)
+#
+install.packages("Hmisc")
+library(Hmisc)
+#
+install.packages("correlation")
+library(correlation)
+#
+install.packages("mnormt") 
+library(mnormt) 
+#
+install.packages("psych")
+library(psych)
+#
+install.packages("NCmisc") # used to list packages used in script
+library(NCmisc)
+#
+list.functions.in.file("filename.R") #function to list packages used
+#
+# Import data
+dat <-read.table(file.choose(),header=TRUE,  fill =  TRUE)
+attach(dat)
+names(dat)
+#
+# display first 5 observations
+head(dat, 5)
+#
+## 01 Correlation coefficient - Between two variables ####
+# 
+# Pearson correlation is computed by default, cor() function 
+# Spearman correlation, add the argument method = "spearman" to the cor() function
+#
+# # Pearson correlation between 2 variables
+cor(dat$variable, dat$variable)
+#
+## Spearman correlation between 2 variables
+cor(dat$variable, dat$variable,
+    method = "spearman"
+)
+#
+## 02 Correlation matrix - Correlations for all variables ####
+#
+# correlation for all variables
+# remove treatment variable (var)
+dat2 <- dat %>%
+  select(-treatment)
+# display 5 first obs. of new dataset
+head(dat2, 5)
+#
+round(cor(dat2),
+      digits = 2 # rounded to 2 decimals
+)
+#
+## 03 Visualise Correlations - Scatterplots for several pairs of variables ####
+# multiple scatterplots
+pairs(dat2[, c(dat2$var1, dat2$var2)]) 
+               
+               
+#               dat2$var1 )])  
+               
+#               dat2$var2)]) 
+par("mar")
+par(mar=c(2,2,2,2))
+#               
+## 04 Another simple correlation matrix ####
+#
+corrplot(cor(dat2),
+         method = "number",
+         type = "upper" # show only upper side
+)
+## 05 Correlation test - For several pairs of variables ####
+# correlation tests for whole dataset 
+#
+res <- rcorr(as.matrix(dat2)) # rcorr() accepts matrices only
+# display p-values (rounded to 3 decimals)
+round(res$P, 3)
+#
+# 06 Combination of correlation coefficients and correlation tests ####
+#
+correlation::correlation(dat,
+                         include_factors = TRUE, method = "auto"
+)
+#
+# 07 Correlograms ####
+#
+# do not edit
+corrplot2 <- function(data,
+                      method = "pearson",
+                      sig.level = 0.05,
+                      order = "original",
+                      diag = FALSE,
+                      type = "upper",
+                      tl.srt = 90,
+                      number.font = 1,
+                      number.cex = 1,
+                      mar = c(0, 0, 0, 0)) {
+  library(corrplot)
+  data_incomplete <- data
+  data <- data[complete.cases(data), ]
+  mat <- cor(data, method = method)
+  cor.mtest <- function(mat, method) {
+    mat <- as.matrix(mat)
+    n <- ncol(mat)
+    p.mat <- matrix(NA, n, n)
+    diag(p.mat) <- 0
+    for (i in 1:(n - 1)) {
+      for (j in (i + 1):n) {
+        tmp <- cor.test(mat[, i], mat[, j], method = method)
+        p.mat[i, j] <- p.mat[j, i] <- tmp$p.value
+      }
+    }
+    colnames(p.mat) <- rownames(p.mat) <- colnames(mat)
+    p.mat
+  }
+  p.mat <- cor.mtest(data, method = method)
+  col <- colorRampPalette(c("#BB4444", "#EE9988", "#FFFFFF", "#77AADD", "#4477AA"))
+  corrplot(mat,
+           method = "color", col = col(200), number.font = number.font,
+           mar = mar, number.cex = number.cex,
+           type = type, order = order,
+           addCoef.col = "black", # add correlation coefficient
+           tl.col = "black", tl.srt = tl.srt, # rotation of text labels
+           # combine with significance level
+           p.mat = p.mat, sig.level = sig.level, insig = "blank",
+           # hide correlation coefficients on the diagonal
+           diag = diag
+  )
+}
+# edit from here
+corrplot2(
+  data = dat2,
+  method = "pearson",
+  sig.level = 0.05,
+  order = "original",
+  diag = FALSE,
+  type = "upper",
+  tl.srt = 75
+)
+list.functions.in.file()
