@@ -15,3 +15,9 @@ head(AJ300)
 data$column.name <- factor(data$column.name,
                         levels=c("treat1", "treat2", "treat3", "treat4", "treat5"))
 # Make a variable explicitly a factor, with treat1 as baseline                      
+#
+# installing/loading the package:
+if(!require(installr)) {
+install.packages("installr"); require(installr)} #load / install+load installr
+# using the package:
+updateR() # this will start the updating process of your R installation.  It will check for newer versions, and if one is available, will guide you through the decisions you'd need to make.
