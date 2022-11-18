@@ -1,19 +1,19 @@
 install.packages("rtweet")
 library(rtweet)
 
-get_timeline("@AnaNatalio", n = Inf)
+get_timeline("@handle", n = Inf)
 auth_setup_default()
 1
-timeline <- get_timeline("@AnaNatalio", n = Inf)
+timeline <- get_timeline("@handle", n = Inf)
 print(timeline, n = Inf)
 
-friends <- get_friends("@AnaNatalio")
+friends <- get_friends("@handle")
 lookup_users(friends$to_id) 
 print(friends, n = Inf)
 
-followers <- get_followers("@AnaNatalio")
+followers <- get_followers("@handle")
 lookup_users(followers$from_id)
 
 
-lists <- lists_users("@AnaNatalio")
+lists <- lists_users("@handle")
 map(lists$list_id, lists_members)
