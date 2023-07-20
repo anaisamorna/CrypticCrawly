@@ -1,3 +1,6 @@
+#install.packages("plyr")
+#library(plyr)
+
 name <- ddply(data, c("column.name1", "column.name2"), summarise,
                      N = length(column.name3),
                      mean = mean(column.name3),
