@@ -1,0 +1,43 @@
+### Package "tidyverse", the whole tidyverse
+# Package "dplyr", this is available in "tidyverse" too
+#
+# Install one package
+install.packages("dplyr")
+library(dplyr)
+#
+# Install multiple packages
+install.packages(c("tidyverse", "ggplot2")) 
+#
+# Development version from GitHub
+# install.packages("devtools")
+devtools::install_github("tidyverse/dplyr")
+#
+### Useful functions from "dplyr"
+#
+# In https://www.rdocumentation.org/packages/dplyr/versions/0.7.8
+#
+vignette("dplyr") # vignette is a long-form guide to package
+vignette("databases", package = "dbplyr") # explore the remote database tables
+#
+mutate() # adds new variables that are functions of existing variables
+#
+select() # picks variables based on their names
+#
+filter() # picks cases based on their values
+var.flt <- filter(RV, EV == "subvariable") #  eg of usage, 'collembola == "morphotypes"; "RV" = response variable, "EV" = explanatory variable
+#
+summarise() # reduces multiple values down to a single summary
+#
+arrange() # changes the ordering of the rows
+#
+### See explanation of "group_by()" function and working example in https://dplyr.tidyverse.org/reference/group_by.html
+#
+group_by() # performs any operation “by group”
+#
+# Usage
+group_by(.data, ..., .add = FALSE, add = NULL, .drop = TRUE)
+#
+# Arguments
+# .data A lazy data frame backed by a database query.
+# ... <data-masking> Variables, or functions of variables. Use desc() to sort a variable in descending order.
+# .add When FALSE, the default, group_by() will override existing groups. To add to the existing groups, use .add = TRUE.
