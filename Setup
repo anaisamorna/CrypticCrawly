@@ -1,6 +1,6 @@
 setwd("add_folder_path") # set working directory
 #
-data <- read.delim(file = "data_file_path"
+data <- read.delim(file = "data_file_path",
                      header = T,
                      sep="\t") # select file
 #         
